@@ -40,7 +40,7 @@ def extract_ts_features(df):
                                           column_id='unit_nr', 
                                           column_sort='time_cycles',
                                           default_fc_parameters=EfficientFCParameters(),
-                                          n_jobs=-1) 
+                                          n_jobs=2) 
     
     extracted_features.dropna(axis=1, inplace=True)
     print(f"Extraction Time: {time.time() - start_time:.2f} seconds")
@@ -116,7 +116,8 @@ if __name__ == "__main__":
     df = load_and_prep_data("data/train_FD001.txt")
     y_target = df.groupby('unit_nr')['RUL'].max()
     
-    X_extracted = extract_ts_features(df).loc[y_target.index]
+    X_extracted = extract_ts_features(df)
+    X_extracted = X_extracted.reindex(y_target.index)
     X_filtered = filter_features(X_extracted, y_target)
     
     X_train, X_test, y_train, y_test = train_test_split(X_filtered, y_target, test_size=0.2, random_state=42)
