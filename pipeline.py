@@ -12,7 +12,7 @@ import random
 import mlflow
 
 # Auto-log metrics to Azure
-mlflow.autolog()
+#mlflow.autolog()
 
 # --- 1. DATA INGESTION & PREP ---
 def load_and_prep_data(filepath):
